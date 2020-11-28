@@ -3,7 +3,7 @@
 
 <head>
 	<meta charset="utf-8" />
-	<title>{{board}} | WBO | {{translations.collaborative_whiteboard}}</title>
+	<title>{{board}} | {{site.name}} | {{translations.collaborative_whiteboard}}</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
 	<link rel="stylesheet" type="text/css" href="../board.css" />
 	<script src="../socket.io/socket.io.js"></script>
@@ -83,6 +83,9 @@
 		</div>
 	</div>
 
+	<footer>
+		{{site.name}} &ndash; <a href="{{site.about_link}}" target="_blank" class="smallink">{{site.about_title}}</a>
+	</footer>
 
 	<script type="application/json" id="translations">{{{ json translations }}}</script>
 	<script type="application/json" id="configuration">{{{ json configuration }}}</script>

@@ -4,14 +4,15 @@ const path = require("path");
 const url = require("url");
 const accept_language_parser = require('accept-language-parser');
 const client_config = require("./client_configuration");
+const translation_loader = require("./translations");
 
 /**
  * Associations from language to translation dictionnaries
  * @const
  * @type {object}
  */
-const TRANSLATIONS = JSON.parse(fs.readFileSync(path.join(__dirname, "translations.json")));
-const languages = Object.keys(TRANSLATIONS);
+const TRANSLATIONS = translation_loader.getAll();
+const languages = translation_loader.getLanguages();
 
 handlebars.registerHelper({
     json: JSON.stringify.bind(JSON)
@@ -34,9 +35,15 @@ class Template {
         const language = accept_language_parser.pick(languages, accept_languages, opts) || 'en';
         const translations = TRANSLATIONS[language] || {};
         const configuration = client_config || {};
+        const site = {
+            name: configuration.SITE_NAME,
+            about_link : configuration.ABOUT_LINK,
+            about_title : configuration.ABOUT_TITLE,
+            show_anonymous : configuration.SHOW_ANONYMOUS
+        };
         const prefix = request.url.split("/boards/")[0].substr(1);
         const baseUrl = findBaseUrl(request) + (prefix ? prefix + "/" : "");
-        return { baseUrl, languages, language, translations, configuration };
+        return { baseUrl, languages, language, site, translations, configuration };
     }
     serve(request, response) {
         const parsedUrl = url.parse(request.url, true);

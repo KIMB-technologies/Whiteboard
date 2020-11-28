@@ -8,6 +8,11 @@ services:
     build:
       context: .
     restart: on-failure
+    environment: 
+      - SITE_NAME=My wbo
+      - ABOUT_LINK=http://example.com
+      - ABOUT_TITLE=Imprint and Privacy
+      - SHOW_ANONYMOUS=false
     deploy:
       restart_policy:
         condition: on-failure

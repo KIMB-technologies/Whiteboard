@@ -35,7 +35,9 @@
         "create_private_board": "Create a private board",
         "named_private_board_description": "You can also create a <strong>named private board</strong>, with a custom URL, that will be accessible to all those who know its name.",
         "board_name_placeholder": "Name of the board…",
-        "view_source": "Source code on GitHub"
+        "view_source": "Source code on GitHub",
+        "recently_opened" : "Recently opened boards",
+        "no_boards" : "No boards found!"
     },
     "de": {
         "hand": "Hand",
@@ -73,7 +75,9 @@
         "create_private_board": "Erstelle ein privates Whiteboard",
         "named_private_board_description": "Du kannst auch ein <strong>privates Whiteboard mit Namen</strong> mit einer benutzerdefinierten URL erstellen. Alle die den Namen kennen, können darauf zugreifen.",
         "board_name_placeholder": "Name des Whiteboards…",
-        "view_source": "Quellcode auf GitHub"
+        "view_source": "Quellcode auf GitHub",
+        "recently_opened" : "Zuletzt geöffnete Boards",
+        "no_boards" : "Keine Boards gefunden!"
     },
     "es": {
         "hand": "Mano",

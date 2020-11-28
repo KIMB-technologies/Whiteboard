@@ -656,3 +656,11 @@ Tools.svg.height.baseVal.value = document.body.clientHeight;
  	"stylesheet" : "style.css",
 }
 */
+
+function boardlist(){
+	var boardList = localStorage.hasOwnProperty('boardlist') ? JSON.parse(localStorage.getItem('boardlist')) : {}
+	var boardname = window.location.pathname.substr(8).replace(/[^a-zA-Z0-9]/,'');
+	boardList[boardname] = [window.location.origin + "/boards?board=" + encodeURIComponent(boardname), Date.now()]
+	localStorage.setItem('boardlist', JSON.stringify(boardList))
+}
+boardlist();

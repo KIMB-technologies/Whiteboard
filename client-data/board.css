@@ -286,3 +286,9 @@ circle.opcursor {
 		line-height: 10px;
 	}
 }
+
+footer{
+	position: fixed;
+	bottom: 5px;
+	right: 5px;
+}

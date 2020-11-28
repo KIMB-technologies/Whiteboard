@@ -34,4 +34,9 @@ module.exports = {
 
     /** Blocked Tools. A comma-separated list of tools that should not appear on boards. */
     BLOCKED_TOOLS: (process.env['WBO_BLOCKED_TOOLS'] || "").split(','),
+
+    SITE_NAME : process.env['SITE_NAME'] || "WBO",
+    ABOUT_LINK : process.env['ABOUT_LINK'] || "https://github.com/lovasoa/whitebophir",
+    ABOUT_TITLE : process.env['ABOUT_TITLE'] || "Github",
+    SHOW_ANONYMOUS : (typeof process.env['SHOW_ANONYMOUS'] != 'undefined') && process.env['SHOW_ANONYMOUS'] === 'true'
 };
