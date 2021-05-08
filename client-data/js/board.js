@@ -93,6 +93,28 @@ Tools.boardName = (function () {
 //Get the board as soon as the page is loaded
 Tools.socket.emit("getboard", Tools.boardName);
 
+function saveBoardNametoLocalStorage() {
+	var boardName = Tools.boardName;
+	if (boardName.toLowerCase() === 'anonymous') return;
+	var recentBoards, key = "recent-boards";
+	try {
+		recentBoards = JSON.parse(localStorage.getItem(key));
+		if (!Array.isArray(recentBoards)) throw new Error("Invalid type");
+	} catch(e) {
+		// On localstorage or json error, reset board list
+		recentBoards = [];
+		console.log("Board history loading error", e);
+	}
+	recentBoards = recentBoards.filter(function (name) {
+		return name !== boardName;
+	});
+	recentBoards.unshift(boardName);
+	recentBoards = recentBoards.slice(0, 20);
+	localStorage.setItem(key, JSON.stringify(recentBoards));
+}
+// Refresh recent boards list on each page show
+window.addEventListener("pageshow", saveBoardNametoLocalStorage);
+
 Tools.HTML = {
 	template: new Minitpl("#tools > .tool"),
 	addShortcut: function addShortcut(key, callback) {
@@ -123,7 +145,7 @@ Tools.HTML = {
 				Tools.i18n.t("keyboard shortcut") + ": " +
 				toolShortcut + ")" +
 				(Tools.list[toolName].secondary ? " [" + Tools.i18n.t("click_to_toggle") + "]" : "");
-			if(Tools.list[toolName].secondary) {
+			if (Tools.list[toolName].secondary) {
 				elem.classList.add('hasSecondary');
 				var secondaryIcon = elem.getElementsByClassName('secondaryIcon')[0];
 				secondaryIcon.src = Tools.list[toolName].secondary.icon;
@@ -396,8 +418,9 @@ function updateDocumentTitle() {
 	var scrollTimeout, lastStateUpdate = Date.now();
 
 	window.addEventListener("scroll", function onScroll() {
-		var x = document.documentElement.scrollLeft / Tools.getScale(),
-			y = document.documentElement.scrollTop / Tools.getScale();
+		var scale = Tools.getScale();
+		var x = document.documentElement.scrollLeft / scale,
+			y = document.documentElement.scrollTop / scale;
 
 		clearTimeout(scrollTimeout);
 		scrollTimeout = setTimeout(function updateHistory() {
@@ -426,11 +449,10 @@ function updateDocumentTitle() {
 	window.addEventListener("DOMContentLoaded", setScrollFromHash, false);
 })();
 
-//List of hook functions that will be applied to messages before sending or drawing them
 function resizeCanvas(m) {
 	//Enlarge the canvas whenever something is drawn near its border
 	var x = m.x | 0, y = m.y | 0
-	var MAX_BOARD_SIZE = 65536; // Maximum value for any x or y on the board
+	var MAX_BOARD_SIZE = Tools.server_config.MAX_BOARD_SIZE || 65536; // Maximum value for any x or y on the board
 	if (x > Tools.svg.width.baseVal.value - 2000) {
 		Tools.svg.width.baseVal.value = Math.min(x + 2000, MAX_BOARD_SIZE);
 	}
@@ -445,13 +467,17 @@ function updateUnreadCount(m) {
 	}
 }
 
+// List of hook functions that will be applied to messages before sending or drawing them
 Tools.messageHooks = [resizeCanvas, updateUnreadCount];
 
 Tools.scale = 1.0;
 var scaleTimeout = null;
 Tools.setScale = function setScale(scale) {
+	var fullScale = Math.max(window.innerWidth, window.innerHeight) / Tools.server_config.MAX_BOARD_SIZE;
+	var minScale = Math.max(0.1, fullScale);
+	var maxScale = 10;
 	if (isNaN(scale)) scale = 1;
-	scale = Math.max(0.1, Math.min(10, scale));
+	scale = Math.max(minScale, Math.min(maxScale, scale));
 	Tools.svg.style.willChange = 'transform';
 	Tools.svg.style.transform = 'scale(' + scale + ')';
 	clearTimeout(scaleTimeout);
@@ -642,18 +668,18 @@ Tools.svg.height.baseVal.value = document.body.clientHeight;
 /**
  What does a "tool" object look like?
  newtool = {
- 	"name" : "SuperTool",
- 	"listeners" : {
- 		"press" : function(x,y,evt){...},
- 		"move" : function(x,y,evt){...},
-  		"release" : function(x,y,evt){...},
- 	},
- 	"draw" : function(data, isLocal){
- 		//Print the data on Tools.svg
- 	},
- 	"onstart" : function(oldTool){...},
- 	"onquit" : function(newTool){...},
- 	"stylesheet" : "style.css",
+	  "name" : "SuperTool",
+	  "listeners" : {
+			"press" : function(x,y,evt){...},
+			"move" : function(x,y,evt){...},
+			"release" : function(x,y,evt){...},
+	  },
+	  "draw" : function(data, isLocal){
+			//Print the data on Tools.svg
+	  },
+	  "onstart" : function(oldTool){...},
+	  "onquit" : function(newTool){...},
+	  "stylesheet" : "style.css",
 }
 */
 

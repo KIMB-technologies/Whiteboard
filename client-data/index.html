@@ -57,13 +57,17 @@
 		<div>
 			<p><label for="board">{{{translations.named_private_board_description}}}</label></p>
 			<form action="boards" method="GET">
-				<input type="text" id="board" name="board" placeholder="{{{translations.board_name_placeholder}}}" />
+				<input type="text" id="board" name="board" required placeholder="{{{translations.board_name_placeholder}}}" />
 				<input type="submit" value="Go">
 			</form>
 			<h3>{{{translations.recently_opened}}}</h3>
 			<ul id="recentBoards">
 				<li>{{{translations.no_boards}}}</li>
 			</ul>
+		</div>
+
+		<div id="recent-boards" class="hidden">
+			<h3>{{{translations.recent_boards}}}</h3>
 		</div>
 	</main>
 
@@ -81,5 +85,7 @@
 	
 	<script src="js/index.js"></script>
 </body>
+
+<script src="../js/index.js" async defer></script>
 
 </html>

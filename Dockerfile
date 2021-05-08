@@ -6,7 +6,6 @@ COPY package.json package-lock.json ./
 RUN npm ci --production
 
 # allow non root user to bind on port 80
-# PHP dependencies, create users
 RUN apk add --update --no-cache libcap \
     && setcap CAP_NET_BIND_SERVICE=+eip /usr/local/bin/node \
     && chown -R node:node /opt/app/
@@ -14,8 +13,8 @@ RUN apk add --update --no-cache libcap \
 # copy source
 COPY --chown=node:node . .
 
-ENV PORT=80
-EXPOSE 80
+ENV PORT=8080
+EXPOSE 8080
 
 # save boards in "volume"
 VOLUME /opt/app/server-data

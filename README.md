@@ -30,15 +30,13 @@ If you have your own web server, and want to run a private instance of WBO on it
 If you use the [docker](https://www.docker.com/) containerization service, you can easily run WBO as a container. 
 An official docker image for WBO is hosted on dockerhub as [`lovasoa/wbo`](https://hub.docker.com/repository/docker/lovasoa/wbo).
 
-You can run it with the following bash command :
+You can run the following bash command to launch WBO on port 5001, while persisting the boards outside of docker:
 
+```bash
+mkdir wbo-boards # Create a directory that will contain your whiteboards
+chown -R 1000:1000 wbo-boards # Make this directory accessible to WBO
+docker run -it --publish 5001:8080 --volume "$(pwd)/wbo-boards:/opt/app/server-data" lovasoa/wbo:latest # run wbo
 ```
-docker run -it --publish 5001:80 --volume "$(pwd)/wbo-boards:/opt/app/server-data" lovasoa/wbo:latest
-```
-
-This will run WBO :
- - on port 5001
- - persisting the user data in a folder named `wbo-boards` in the current working directory.
 
 You can then access WBO at `http://localhost:5001`.
 
@@ -48,11 +46,11 @@ Alternatively, you can run the code with [node.js](https://nodejs.org/) directly
 
 First, download the sources:
 ```
-git clone git@github.com:lovasoa/whitebophir.git
+git clone https://github.com/lovasoa/whitebophir.git
 cd whitebophir
 ```
 
-Then [install node.js](https://nodejs.org/en/download/) (v8.0 or superior)
+Then [install node.js](https://nodejs.org/en/download/) (v10.0 or superior)
 if you don't have it already, then install WBO's dependencies:
 
 ```
@@ -64,7 +62,11 @@ Finally, you can start the server:
 PORT=5001 npm start
 ```
 
-This will run WBO directly on your machine, on port 5001, without any isolation from the other services.
+This will run WBO directly on your machine, on port 5001, without any isolation from the other services. You can also use an invokation like
+```
+PORT=5001 HOST=127.0.0.1 npm start
+```
+to make whitebophir only listen on the loopback device. This is useful if you want to put whitebophir behind a reverse proxy.
 
 ### Running WBO on a subfolder
 

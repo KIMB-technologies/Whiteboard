@@ -2,3 +2,15 @@
 .github/*
 .vscode/*
 tests/*
+node_modules
+wbo-backups
+tests_output
+wbo-backup.tgz
+geckodriver.log
+server-data/*
+AUTHORS
+LICENSE
+nightwatch.conf.js
+README.md
+docker-compose.yml
+.gitignore

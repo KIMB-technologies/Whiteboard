@@ -34,6 +34,9 @@
 	// than this?
 	var MIN_PENCIL_INTERVAL_MS = Tools.server_config.MAX_EMIT_COUNT_PERIOD / Tools.server_config.MAX_EMIT_COUNT;
 
+	var AUTO_FINGER_WHITEOUT = Tools.server_config.AUTO_FINGER_WHITEOUT;
+	var hasUsedStylus = false;
+
 	//Indicates the id of the line the user is currently drawing or an empty string while the user is not drawing
 	var curLineId = "",
 		lastTime = performance.now(); //The time at which the last point was drawn
@@ -46,10 +49,29 @@
 		this.y = y;
 	}
 
+	function handleAutoWhiteOut(evt) {
+		if (evt.touches && evt.touches[0] && evt.touches[0].touchType == "stylus") {
+			//When using stylus, switch back to the primary
+			if (hasUsedStylus && Tools.curTool.secondary.active) {
+				Tools.change("Pencil");
+			}
+			//Remember if starting a line with a stylus
+			hasUsedStylus = true;
+		}
+		if (evt.touches && evt.touches[0] && evt.touches[0].touchType == "direct") {
+			//When used stylus and touched with a finger, switch to secondary
+			if (hasUsedStylus && !Tools.curTool.secondary.active) {
+				Tools.change("Pencil");
+			}
+		}
+	}
+
 	function startLine(x, y, evt) {
 
 		//Prevent the press from being interpreted by the browser
 		evt.preventDefault();
+
+		if (AUTO_FINGER_WHITEOUT) handleAutoWhiteOut(evt);
 
 		curLineId = Tools.generateUID("l"); //"l" for line
 
@@ -139,6 +161,32 @@
 		return line;
 	}
 
+	//Remember drawing and white-out sizes separately
+	var drawingSize = -1;
+	var whiteOutSize = -1;
+
+	function restoreDrawingSize() {
+		whiteOutSize = Tools.getSize();
+		if (drawingSize != -1) {
+			Tools.setSize(drawingSize);
+		}
+	}
+
+	function restoreWhiteOutSize() {
+		drawingSize = Tools.getSize();
+		if (whiteOutSize != -1) {
+			Tools.setSize(whiteOutSize);
+		}
+	}
+
+	//Restore remembered size after switch
+	function toggleSize() {
+		if (pencilTool.secondary.active) {
+			restoreWhiteOutSize();
+		} else {
+			restoreDrawingSize();
+		}
+	}
 
 	var pencilTool = {
 		"name": "Pencil",
@@ -149,15 +197,34 @@
 			"release": stopLineAt,
 		},
 		"draw": draw,
+		"onstart": function(oldTool) {
+			//Reset stylus
+			hasUsedStylus = false;
+		},
 		"secondary": {
 			"name": "White-out",
 			"icon": "tools/pencil/whiteout_tape.svg",
 			"active": false,
-			"switch": stopLine,
+			"switch": function() {
+				stopLine();
+				toggleSize();
+			},
+		},
+		"onstart": function() {
+			//When switching from another tool to white-out, restore white-out size
+			if (pencilTool.secondary.active) {
+				restoreWhiteOutSize();
+			}
+		},
+		"onquit": function() {
+			//When switching from white-out to another tool, restore drawing size
+			if (pencilTool.secondary.active) {
+				restoreDrawingSize();
+			}
 		},
 		"mouseCursor": "url('tools/pencil/cursor.svg'), crosshair",
 		"icon": "tools/pencil/icon.svg",
-		"stylesheet": "tools/pencil/pencil.css"
+		"stylesheet": "tools/pencil/pencil.css",
 	};
 	Tools.add(pencilTool);
 
