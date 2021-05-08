@@ -20,6 +20,7 @@
     "mousewheel": "Mausrad",
     "mover": "Verschiebung",
     "named_private_board_description": "Du kannst auch ein <strong>privates Whiteboard mit Namen</strong> mit einer benutzerdefinierten URL erstellen. Alle die den Namen kennen, können darauf zugreifen.",
+    "no_boards" : "Keine Boards gefunden!",
     "opacity": "Deckkraft",
     "open_public_board": "Gehe zum öffentlichen Whiteboard",
     "pencil": "Stift",
@@ -39,7 +40,7 @@
     "zoom": "Zoom"
   },
   "en": {
-    "White-out": "White-out",
+    "white-out": "White-out",
     "board_name_placeholder": "Name of the board…",
     "circle": "Circle",
     "click_to_toggle": "click to toggle",
@@ -60,6 +61,7 @@
     "mousewheel": "mouse wheel",
     "mover": "Mover",
     "named_private_board_description": "You can also create a <strong>named private board</strong>, with a custom URL, that will be accessible to all those who know its name.",
+    "no_boards" : "No boards found!",
     "opacity": "Opacity",
     "open_public_board": "Go to the public board",
     "pencil": "Pencil",
@@ -154,7 +156,7 @@
     "white-out": "Blanco"
   },
   "hu": {
-    "White-out": "Lefedő",
+    "white-out": "Lefedő",
     "board_name_placeholder": "Tábla neve…",
     "circle": "Kör",
     "click_to_toggle": "kattintson ide a be- és kikapcsolásához",
@@ -271,7 +273,7 @@
     "zoom": "拡大・縮小"
   },
   "pt": {
-    "White-out": "Branquejar",
+    "white-out": "Branquejar",
     "board_name_placeholder": "Nome do quadro...",
     "circle": "Círculo",
     "click_to_toggle": "clique para alternar",
@@ -348,7 +350,7 @@
     "zoom": "Лупа"
   },
   "uk": {
-    "White-out": "Коректор",
+    "white-out": "Коректор",
     "board_name_placeholder": "Назва дошки…",
     "circle": "Коло",
     "click_to_toggle": "клацніть, щоб перемкнути",
@@ -387,7 +389,7 @@
     "zoom": "Лупа"
   },
   "vn": {
-    "White-out": "Trắng",
+    "white-out": "Trắng",
     "board_name_placeholder": "Tên bản …",
     "circle": "Tròn",
     "click_to_toggle": "Bật/tắt",

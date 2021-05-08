@@ -13,8 +13,8 @@ RUN apk add --update --no-cache libcap \
 # copy source
 COPY --chown=node:node . .
 
-ENV PORT=8080
-EXPOSE 8080
+ENV PORT=80
+EXPOSE 80
 
 # save boards in "volume"
 VOLUME /opt/app/server-data
