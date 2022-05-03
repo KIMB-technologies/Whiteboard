@@ -46,7 +46,19 @@ module.exports = {
   ABOUT_TITLE : process.env['ABOUT_TITLE'] || "Github",
   SHOW_ANONYMOUS : (typeof process.env['SHOW_ANONYMOUS'] != 'undefined') && process.env['SHOW_ANONYMOUS'] === 'true',
 
+  /** Selection Buttons. A comma-separated list of selection buttons that should not be available. */
+  BLOCKED_SELECTION_BUTTONS: (process.env["WBO_BLOCKED_SELECTION_BUTTONS"] || "").split(","),
+
   /** Automatically switch to White-out on finger touch after drawing
       with Pencil using a stylus. Only supported on iPad with Apple Pencil. */
-  AUTO_FINGER_WHITEOUT: process.env['AUTO_FINGER_WHITEOUT'] !== "disabled",
+  AUTO_FINGER_WHITEOUT: process.env["AUTO_FINGER_WHITEOUT"] !== "disabled",
+
+  /** If this variable is set, it should point to a statsd listener that will 
+   * receive WBO's monitoring information.
+   * example: udp://127.0.0.1
+  */
+  STATSD_URL: process.env["STATSD_URL"],
+
+  /** Secret key for jwt */
+  AUTH_SECRET_KEY: (process.env["AUTH_SECRET_KEY"] || ""),
 };

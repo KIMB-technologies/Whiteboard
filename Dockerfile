@@ -1,4 +1,4 @@
-FROM node:14-alpine
+FROM node:16-alpine
 
 # setup node
 WORKDIR /opt/app
@@ -19,6 +19,4 @@ EXPOSE 80
 # save boards in "volume"
 VOLUME /opt/app/server-data
 
-# do not run as root
-USER node
-CMD ["npm", "start"]
+CMD ["/usr/local/bin/node", "server/server.js"]

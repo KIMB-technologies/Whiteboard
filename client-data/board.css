@@ -54,7 +54,6 @@ html, body, svg {
 	transition-duration: 1s;
 	cursor: default;
 	padding: 10px;
-	pointer-events: none;
 }
 
 #menu.closed {
@@ -84,7 +83,7 @@ html, body, svg {
 }
 
 #settings {
-	margin-bottom: 0;
+	margin-bottom: 20px;
 }
 
 #menu .tool {
@@ -275,7 +274,6 @@ circle.opcursor {
 #cursor-me {
 	transition: 0s;
 }
-
 
 /* Internet Explorer specific CSS */
 @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
