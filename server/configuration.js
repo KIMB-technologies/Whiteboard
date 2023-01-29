@@ -61,4 +61,5 @@ module.exports = {
 
   /** Secret key for jwt */
   AUTH_SECRET_KEY: (process.env["AUTH_SECRET_KEY"] || ""),
+
 };

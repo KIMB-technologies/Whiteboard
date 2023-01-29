@@ -28,7 +28,7 @@ If you have your own web server, and want to run a private instance of WBO on it
 ### Running the code in a container (safer)
 
 If you use the [docker](https://www.docker.com/) containerization service, you can easily run WBO as a container. 
-An official docker image for WBO is hosted on dockerhub as [`lovasoa/wbo`](https://hub.docker.com/r/lovasoa/wbo): [![WBO 1M docker pulls](https://img.shields.io/docker/pulls/lovasoa/wbo.svg)](https://hub.docker.com/repository/docker/lovasoa/wbo).
+An official docker image for WBO is hosted on dockerhub as [`lovasoa/wbo`](https://hub.docker.com/r/lovasoa/wbo): [![WBO 1M docker pulls](https://img.shields.io/docker/pulls/lovasoa/wbo?style=flat)](https://hub.docker.com/repository/docker/lovasoa/wbo).
 
 You can run the following bash command to launch WBO on port 5001, while persisting the boards outside of docker:
 
@@ -81,9 +81,47 @@ If you feel like contributing to this collaborative project, you can [translate 
 
 ## Authentication
 
-WBO supports authentication with a JWT. This should be passed in as a query with the key `token`, eg, `http://myboard.com/boards/test?token={token}`
+WBO supports authentication using [Json Web Tokens](https://jwt.io/introduction). This should be passed in as a query with the key `token`, eg, `http://myboard.com/boards/test?token={token}`
 
 The `AUTH_SECRET_KEY` variable in [`configuration.js`](./server/configuration.js) should be filled with the secret key for the JWT.
+
+Within the payload, you can declare the user's roles as an array.
+Currently the only accepted roles are `moderator` and `editor`. 
+
+ - `moderator` will give the user an additional tool to wipe all data from the board. To declare this role, see the example below.
+ - `editor` will give the user the ability to edit the board. This is the default role for all users.
+
+```json
+{
+  "iat": 1516239022,
+  "exp": 1516298489,
+  "roles": ["moderator"]
+}
+```
+Moderators have access to the Clear tool, which will wipe all content from the board.
+
+## Board name verification in the JWT
+
+WBO supports verification of the board with a JWT.
+
+To check for a valid board name just add the board name to the role with a ":". With this you can set a moderator for a specific board.
+
+```json
+{
+  "roles": ["moderator:<boardName1>","moderator:<boardName2>","editor:<boardName3>","editor:<boardName4>"]
+}
+```
+eg, `http://myboard.com/boards/mySecretBoardName?token={token}`
+
+```json
+{
+  "iat": 1516239022,
+  "exp": 1516298489,
+  "roles": ["moderator:mySecretBoardName"]
+}
+```
+
+You can now be sure that only users who have the correct token have access to the board with the specific name.
 
 ## Configuration
 
