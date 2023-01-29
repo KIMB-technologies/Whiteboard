@@ -48,12 +48,6 @@ class Template {
     }
     const translations = TRANSLATIONS[language] || {};
     const configuration = client_config || {};
-    const site = {
-      name: configuration.SITE_NAME,
-      about_link : configuration.ABOUT_LINK,
-      about_title : configuration.ABOUT_TITLE,
-      show_anonymous : configuration.SHOW_ANONYMOUS
-    };
     const prefix = request.url.split("/boards/")[0].substr(1);
     const baseUrl = findBaseUrl(request) + (prefix ? prefix + "/" : "");
     const moderator = isModerator;

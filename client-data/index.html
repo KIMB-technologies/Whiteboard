@@ -2,7 +2,7 @@
 <html lang="{{language}}">
   <head>
     <meta charset="utf-8" />
-    <title>{{site.name}} — {{translations.collaborative_whiteboard}}</title>
+    <title>{{configuration.SITE_NAME}} — {{translations.collaborative_whiteboard}}</title>
     <link rel="stylesheet" href="index.css" />
     <meta name="description" content="{{translations.tagline}}" />
     <meta
@@ -24,7 +24,7 @@
   </head>
   <body>
     <header>
-      <h1>{{site.name}}</h1>
+      <h1>{{configuration.SITE_NAME}}</h1>
       <nav class="lang-selector">
         <span>{{language}}</span>
         <ul>
@@ -53,7 +53,7 @@
       </div>
 
       <div id="actions">
-        {{#if site.show_anonymous}}
+        {{#if configuration.SHOW_ANONYMOUS}}
           <div>
             <p>{{{translations.public_board_description}}}</p>
             <a href="boards/anonymous" class="wbo-button"
@@ -106,7 +106,10 @@
             title="{{translations.view_source}}"
             ><img alt="github" src="github.svg" width="30" height="30" />
           </a>
-          {{site.name}} &ndash; <a href="{{site.about_link}}" target="_blank" class="smallink">{{site.about_title}}</a>
+          <div>
+            {{configuration.SITE_NAME}} &ndash;
+            <a href="{{configuration.ABOUT_LINK}}" target="_blank" class="smallink">{{configuration.ABOUT_TITLE}}</a>
+          </div>
         </footer>
       </div>
     </main>

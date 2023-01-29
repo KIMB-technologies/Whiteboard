@@ -23,7 +23,10 @@ function boardlist(){
 	}
 
 	var keyList = Object.keys(boardList)
-	keyList.sort((x,y) => boardList[y][1]-boardList[x][1]);	
-	document.getElementById("recentBoards").innerHTML = keyList.reduce((html, board) => html + '<li><a href="'+ boardList[board][0] +'" >'+ board +'</a></li>', "")
+	if(keyList.length > 0 ){
+		keyList.sort((x,y) => boardList[y][1]-boardList[x][1]);	
+		document.getElementById("recent-boards").innerHTML = '<ul>' + keyList.reduce((html, board) => html + '<li><a href="'+ boardList[board][0] +'" >'+ board +'</a></li>', "") + "</ul>";
+		document.getElementById("recent-boards").classList.remove('hidden');
+	}
 }
 boardlist();
