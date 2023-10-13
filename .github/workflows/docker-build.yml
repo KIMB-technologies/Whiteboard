@@ -9,7 +9,7 @@ on:
 env:
   IMAGE_OWNER: kimbtechnologies
   IMAGE_NAME: wbo
-  BASE_IMAGE: library/node:16-alpine
+  BASE_IMAGE: library/node:20-alpine
 
 jobs:
   build:
