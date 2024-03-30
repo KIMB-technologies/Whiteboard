@@ -4,8 +4,8 @@ function boardlist(){
 	function convertOldList(){
 		var added = false;
 		Object.keys( localStorage ).forEach( (v) => {
-			if( v.substr(0, 4) == "url_" ){
-				var board = v.substr(4);
+			if( v.substring(0, 4) == "url_" ){
+				var board = v.substring(4);
 				if( !boardList.hasOwnProperty(board) ){
 					boardList[board] = [ localStorage.getItem(v) , Date.now()];
 					localStorage.removeItem(v);

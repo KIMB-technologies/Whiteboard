@@ -16,17 +16,20 @@ async function get_error(directory) {
   if (!fs.statSync(directory).isDirectory()) {
     error = "exists, but is not a directory";
   }
-  const { uid, gid } = os.userInfo();
   const tmpfile = path.join(directory, Math.random() + ".json");
   try {
     fs.writeFileSync(tmpfile, "{}");
     fs.unlinkSync(tmpfile);
   } catch (e) {
-    return (
-      "does not allow file creation and deletion. " +
-      "Check the permissions of the directory, and if needed change them so that " +
-      `user with UID ${uid} has access to them. This can be achieved by running the command: chown ${uid}:${gid} on the directory`
-    );
+    let err_msg = "does not allow file creation and deletion. ";
+    try {
+      const { uid, gid } = os.userInfo();
+      err_msg +=
+        "Check the permissions of the directory, and if needed change them so that " +
+        `user with UID ${uid} has access to them. This can be achieved by running the command: chown ${uid}:${gid} on the directory`;
+    } finally {
+      return err_msg;
+    }
   }
   const fileChecks = [];
   const files = await fs.promises.readdir(directory, { withFileTypes: true });
@@ -38,7 +41,7 @@ async function get_error(directory) {
       fileChecks.push(
         fs.promises.access(elemPath, R_OK | W_OK).catch(function () {
           return elemPath;
-        })
+        }),
       );
     }
   }
@@ -65,7 +68,7 @@ function check_output_directory(directory) {
       console.error(
         `The configured history directory in which boards are stored ${error}.` +
           `\nThe history directory can be configured with the environment variable WBO_HISTORY_DIR. ` +
-          `It is currently set to "${directory}".`
+          `It is currently set to "${directory}".`,
       );
       process.exit(1);
     }

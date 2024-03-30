@@ -1,10 +1,10 @@
-version: '3'
+version: "3"
 services:
   www:
     volumes:
       - ./server-data:/opt/app/server-data
     ports:
-      - '80:80'
+      - "80:80"
     build:
       context: .
     image: kimbtechnologies/wbo:latest
@@ -20,4 +20,3 @@ services:
         delay: 5s
         max_attempts: 5
         window: 60s
-
